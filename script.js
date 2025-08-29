@@ -1,27 +1,54 @@
 let coins = 110;
-document.getElementById('coin-count').innerText=coins;
+document.getElementById("coin-count").innerText = coins;
 
-function callButton(buttonId){
-document.getElementById(buttonId).addEventListener("click", function() {
-    if(coins<=20){
-        alert("❌ কল করার জন্য পর্যাপ্ত কয়েন নেই!");
-        return;
+const historyContainer= document.getElementById("call-history");
+const clearBtn = document.getElementById("clear-history");
+console.log(historyContainer,clearBtn)
+
+function callButton(buttonId) {
+  const btn = document.getElementById(buttonId);
+
+  btn.addEventListener("click", function () {
+    if (coins < 20) {
+      alert("❌ কল করার জন্য পর্যাপ্ত কয়েন নেই!");
+      return;
     }
-    coins =coins-20;
-   document.getElementById("coin-count").innerText = coins;
-  const card = this.parentNode.parentNode;
-  const serviceName = card.querySelector(".service-name").innerText;
-  const serviceNumber = card.querySelector(".service-number").innerText;
+    coins -= 20;
+    document.getElementById("coin-count").innerText = coins;
 
-  alert("📞 Calling " + serviceName + " (" + serviceNumber + ")");
-});
+    const card = btn.closest(".bg-white");
+    const serviceName = card.querySelector(".service-name").innerText;
+    const serviceNumber = card.querySelector(".service-number").innerText;
+
+    alert("📞 Calling " + serviceName + " (" + serviceNumber + ")");
+
+    // কল history add
+    const time = new Date().toLocaleTimeString();
+    const div = document.createElement("div");
+  div.innerHTML = `
+  <div style="display:flex;justify-content:space-between;background:#FAFAFA;margin-top:15px;padding:10px;border-radius:8px;">
+    <div>
+      <b>${serviceName}</b><br>
+      <small>${serviceNumber}</small>
+    </div>
+    <div>${time}</div>
+  </div>`;
+  historyContainer.prepend(div);
+  });
 }
-callButton("call-btn-1")
-callButton("call-btn-2")
-callButton("call-btn-3")
-callButton("call-btn-3")
-callButton("call-btn-5")
-callButton("call-btn-6")
+
+callButton("call-btn-1");
+callButton("call-btn-2");
+callButton("call-btn-3");
+callButton("call-btn-4");
+callButton("call-btn-5");
+callButton("call-btn-6");
+
+// History Clear Button
+clearBtn.addEventListener("click", function () {
+  historyContainer.innerHTML = "";
+});
+
 
 //heart count
 let heartCount = 0;
